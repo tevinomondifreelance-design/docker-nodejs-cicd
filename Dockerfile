@@ -4,6 +4,10 @@ WORKDIR /app
 
 COPY app/ .
 
+RUN ls -la
+
+RUN cat package.json
+
 RUN npm install
 
 EXPOSE 3000
