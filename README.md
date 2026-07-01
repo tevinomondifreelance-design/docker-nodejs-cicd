@@ -182,7 +182,6 @@ Application deployed on:
 
 Example:
 
-```
 http://51.20.127.71:3000
 
 ---
