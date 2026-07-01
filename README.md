@@ -281,7 +281,7 @@ docker rmi docker-nodejs-app
 
 - GitHub: https://github.com/tevinomondifreelance-design
 - Docker Hub: https://hub.docker.com/u/tevinportfolio
-- LinkedIn: *(Add your LinkedIn profile here)*
+- LinkedIn: https://www.linkedin.com/in/tevin-omondi-131141355/
 
 ---
 
