@@ -2,6 +2,7 @@
 
 A simple Node.js web application containerized with Docker and deployed on an Amazon EC2 Ubuntu instance. The Docker image is published on Docker Hub, demonstrating a complete container deployment workflow.
 
+
 ---
 
 ## Project Overview
