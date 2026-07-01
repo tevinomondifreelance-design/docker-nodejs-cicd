@@ -183,8 +183,7 @@ Application deployed on:
 Example:
 
 ```
-http://YOUR_PUBLIC_IP:3000
-```
+http://51.20.127.71:3000
 
 ---
 
