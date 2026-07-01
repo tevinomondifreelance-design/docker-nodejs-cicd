@@ -1,206 +1,127 @@
-# Dockerized Node.js Application on AWS EC2
+# Dockerized Node.js CI/CD Pipeline with GitHub Actions, Docker Hub & AWS EC2
 
-A simple Node.js web application containerized with Docker and deployed on an Amazon EC2 Ubuntu instance. The Docker image is published on Docker Hub, demonstrating a complete container deployment workflow.
-
-
----
+![GitHub Actions](https://img.shields.io/badge/GitHub-Actions-blue?logo=githubactions)
+![Docker](https://img.shields.io/badge/Docker-Container-blue?logo=docker)
+![AWS](https://img.shields.io/badge/AWS-EC2-orange?logo=amazonaws)
+![Node.js](https://img.shields.io/badge/Node.js-22-green?logo=node.js)
 
 ## Project Overview
 
-This project demonstrates how to:
+This project demonstrates a complete **CI/CD pipeline** for a Dockerized Node.js application.
 
-- Launch an Amazon EC2 Ubuntu instance
-- Connect securely using SSH
-- Install and configure Docker
-- Build a Docker image for a Node.js application
-- Run the application inside a Docker container
-- Expose the application to the internet
-- Publish the Docker image to Docker Hub
+Whenever code is pushed to the **main** branch:
 
----
+- GitHub Actions automatically builds the Docker image.
+- The image is pushed to Docker Hub.
+- GitHub Actions connects securely to an AWS EC2 instance via SSH.
+- The latest Docker image is pulled.
+- The existing container is stopped and removed.
+- A new container is launched automatically.
 
-## Architecture
+This project showcases practical DevOps skills including:
 
-```
-                +------------------+
-                |    Developer     |
-                +------------------+
-                         |
-                         | Git / SSH
-                         |
-                         ▼
-              +----------------------+
-              |   AWS EC2 (Ubuntu)   |
-              +----------------------+
-                         |
-                  Docker Engine
-                         |
-                         ▼
-              +----------------------+
-              | Node.js Docker Image |
-              +----------------------+
-                         |
-                         ▼
-              +----------------------+
-              | Docker Container     |
-              | Port 3000            |
-              +----------------------+
-                         |
-                         ▼
-                 Web Browser
-```
-
----
-
-## Technologies Used
-
-- AWS EC2
-- Ubuntu 24.04 LTS
 - Docker
-- Node.js
-- Git
+- GitHub Actions
 - Docker Hub
+- AWS EC2
+- Linux
+- SSH Automation
+- Continuous Integration
+- Continuous Deployment
 
 ---
 
-## Project Structure
+# Architecture
 
 ```
-docker-nodejs-ec2/
+Developer
+     │
+     ▼
+GitHub Repository
+     │
+     ▼
+GitHub Actions
+     │
+     ├──────── Build Docker Image
+     │
+     ├──────── Push to Docker Hub
+     │
+     ▼
+AWS EC2 (Ubuntu)
+     │
+     ▼
+Docker Container
+     │
+     ▼
+Node.js Application
+```
+
+---
+
+# Technologies Used
+
+- Node.js
+- Express.js
+- Docker
+- Docker Hub
+- GitHub Actions
+- AWS EC2
+- Ubuntu Linux
+- Git
+- SSH
+
+---
+
+# Project Structure
+
+```
+docker-nodejs-cicd
 │
-├── app.js
-├── package.json
+├── .github
+│   └── workflows
+│       └── deploy.yml
+│
+├── app
+│   ├── public
+│   │   ├── index.html
+│   │   ├── styles.css
+│   │   └── script.js
+│   │
+│   ├── package.json
+│   └── server.js
+│
+├── screenshots
+│   ├── browser showing app.jpg
+│   ├── docker ps.jpg
+│   ├── docker images.jpg
+│   ├── docker repository.jpg
+│   ├── EC2.jpg
+│   └── ssh terminal.jpg
+│
 ├── Dockerfile
+├── .dockerignore
 ├── .gitignore
-├── README.md
-└── screenshots/
-    ├── browser.png
-    ├── docker-build.png
-    ├── docker-running.png
-    ├── dockerhub.png
-    └── ec2-instance.png
+└── README.md
 ```
 
 ---
 
-## Dockerfile
+# CI/CD Workflow
 
-```dockerfile
-FROM node:22-alpine
+The deployment process is fully automated.
 
-WORKDIR /app
-
-COPY . .
-
-EXPOSE 3000
-
-CMD ["npm", "start"]
-```
-
----
-
-## Build the Docker Image
-
-```bash
-docker build -t docker-nodejs-app .
-```
+1. Developer pushes code to GitHub.
+2. GitHub Actions starts automatically.
+3. Docker image is built.
+4. Docker image is pushed to Docker Hub.
+5. GitHub Actions connects to EC2 through SSH.
+6. Existing container is stopped.
+7. Latest Docker image is pulled.
+8. New container is deployed.
 
 ---
 
-## Run the Container
-
-```bash
-docker run -d -p 3000:3000 --name node-app docker-nodejs-app
-```
-
-Verify the container:
-
-```bash
-docker ps
-```
-
----
-
-## Test the Application
-
-From the EC2 instance:
-
-```bash
-curl http://localhost:3000
-```
-
-Expected output:
-
-```html
-<h1>Docker Node.js App</h1>
-<p>Successfully deployed on AWS EC2 using Docker!</p>
-```
-
----
-
-## Docker Hub Repository
-
-Docker Image:
-
-```text
-tevinportfolio/docker-nodejs-app
-```
-
-Pull the image:
-
-```bash
-docker pull tevinportfolio/docker-nodejs-app:latest
-```
-
-Run directly from Docker Hub:
-
-```bash
-docker run -d -p 3000:3000 tevinportfolio/docker-nodejs-app
-```
-
----
-
-## Deployment Steps
-
-1. Launch an Ubuntu EC2 instance
-2. Configure Security Groups (Ports 22 and 3000)
-3. Connect using SSH
-4. Install Docker
-5. Create the Node.js application
-6. Build the Docker image
-7. Run the Docker container
-8. Verify the application
-9. Push the image to Docker Hub
-
----
-
-## Screenshots
-
-### Application Running
-
-![Application](screenshots/browser.png)
-
----
-
-### Docker Container
-
-![Docker Running](screenshots/docker-running.png)
-
----
-
-### Docker Hub Repository
-
-![Docker Hub](screenshots/dockerhub.png)
-
----
-
-### EC2 Instance
-
-![EC2](screenshots/ec2-instance.png)
-
----
-
-## Useful Docker Commands
+# Docker Commands Used
 
 Build image
 
@@ -220,71 +141,123 @@ List running containers
 docker ps
 ```
 
-View logs
+List Docker images
 
 ```bash
-docker logs node-app
-```
-
-Stop container
-
-```bash
-docker stop node-app
-```
-
-Start container
-
-```bash
-docker start node-app
-```
-
-Remove container
-
-```bash
-docker rm node-app
-```
-
-Remove image
-
-```bash
-docker rmi docker-nodejs-app
+docker images
 ```
 
 ---
 
-## Skills Demonstrated
+# GitHub Secrets
 
-- Cloud Computing (AWS EC2)
-- Linux Administration
-- Docker Containerization
-- Node.js Deployment
-- Networking and Security Groups
-- Docker Hub Image Management
-- Git & GitHub Version Control
+The following repository secrets were configured:
 
----
-
-## Future Improvements
-
-- Deploy using Docker Compose
-- Configure Nginx as a reverse proxy
-- Add HTTPS using Let's Encrypt
-- Implement CI/CD with GitHub Actions
-- Deploy on Amazon ECS
-- Monitor containers with CloudWatch
+| Secret | Purpose |
+|----------|----------|
+| DOCKER_USERNAME | Docker Hub Username |
+| DOCKER_PASSWORD | Docker Hub Access Token |
+| EC2_HOST | Public IP of EC2 |
+| EC2_USERNAME | Ubuntu |
+| EC2_SSH_KEY | Private SSH Key |
 
 ---
 
-## Author
+# Docker Hub Repository
+
+Docker images are automatically pushed to:
+
+**https://hub.docker.com/r/tevinportfolio/docker-nodejs-app**
+
+---
+
+# AWS Deployment
+
+Application deployed on:
+
+- AWS EC2
+- Ubuntu 24.04
+- Docker Engine
+- Port 3000
+
+Example:
+
+```
+http://YOUR_PUBLIC_IP:3000
+```
+
+---
+
+# Screenshots
+
+## Application Running
+
+![Application](screenshots/browser%20showing%20app.jpg)
+
+---
+
+## Docker Container
+
+![Docker Running](screenshots/docker%20ps.jpg)
+
+---
+
+## Docker Images
+
+![Docker Images](screenshots/docker%20images.jpg)
+
+---
+
+## Docker Hub Repository
+
+![Docker Hub](screenshots/docker%20repository.jpg)
+
+---
+
+## EC2 Instance
+
+![EC2](screenshots/EC2.jpg)
+
+---
+
+## SSH Connection
+
+![SSH](screenshots/ssh%20terminal.jpg)
+
+---
+
+# Future Improvements
+
+- HTTPS using Nginx
+- Custom Domain
+- AWS Application Load Balancer
+- Auto Scaling
+- Amazon ECR
+- Kubernetes (EKS)
+- Terraform Infrastructure as Code
+- Monitoring with CloudWatch
+- Blue/Green Deployment
+
+---
+
+# Author
 
 **Tevin Omondi**
 
-- GitHub: https://github.com/tevinomondifreelance-design
-- Docker Hub: https://hub.docker.com/u/tevinportfolio
-- LinkedIn: https://www.linkedin.com/in/tevin-omondi-131141355/
+GitHub
+
+https://github.com/tevinomondifreelance-design
+
+LinkedIn
+
+https://www.linkedin.com/in/tevin-omondi-131141355/
+
+Docker Hub
+
+https://hub.docker.com/u/tevinportfolio
 
 ---
 
-## License
+# License
 
 This project is licensed under the MIT License.
